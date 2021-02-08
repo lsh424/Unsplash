@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SearchListHeaderView" customModule="Unsplash" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="385" height="50"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C3Y-VO-sOT">
+                    <rect key="frame" x="0.0" y="0.0" width="385" height="50"/>
+                    <color key="backgroundColor" red="0.062746018170000001" green="0.066753618419999994" blue="0.062744677070000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Header Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gbv-Mz-eKh">
+                    <rect key="frame" x="15" y="10" width="303" height="30"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3gJ-a9-Lb8">
+                    <rect key="frame" x="328" y="10" width="42" height="30"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="42" id="W5P-b2-erP"/>
+                        <constraint firstAttribute="height" constant="30" id="u46-HA-e8m"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <state key="normal" title="Clear">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="didPressClearButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Ex0-t0-tVL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="C3Y-VO-sOT" secondAttribute="bottom" id="0g8-pq-eUU"/>
+                <constraint firstItem="3gJ-a9-Lb8" firstAttribute="centerY" secondItem="gbv-Mz-eKh" secondAttribute="centerY" id="2qz-eR-N9V"/>
+                <constraint firstItem="gbv-Mz-eKh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="709-af-EKv"/>
+                <constraint firstItem="gbv-Mz-eKh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="HuM-R2-xgv"/>
+                <constraint firstItem="3gJ-a9-Lb8" firstAttribute="leading" secondItem="gbv-Mz-eKh" secondAttribute="trailing" constant="10" id="Ixe-up-a04"/>
+                <constraint firstItem="C3Y-VO-sOT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="N85-uV-IgG"/>
+                <constraint firstAttribute="trailing" secondItem="C3Y-VO-sOT" secondAttribute="trailing" id="O49-CX-cPH"/>
+                <constraint firstAttribute="trailing" secondItem="3gJ-a9-Lb8" secondAttribute="trailing" constant="15" id="VfO-0M-S3U"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gbv-Mz-eKh" secondAttribute="bottom" constant="10" id="hNL-fB-4he"/>
+                <constraint firstItem="C3Y-VO-sOT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="jb1-Fm-MU2"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="clearButton" destination="3gJ-a9-Lb8" id="Pkw-RZ-wKV"/>
+                <outlet property="headerLabel" destination="gbv-Mz-eKh" id="qAK-jy-2nv"/>
+            </connections>
+            <point key="canvasLocation" x="-2.1739130434782612" y="242.41071428571428"/>
+        </view>
+    </objects>
+</document>

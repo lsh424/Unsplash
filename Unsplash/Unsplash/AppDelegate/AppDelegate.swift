@@ -18,7 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UINavigationBar.appearance().tintColor = .gray
         
         UINavigationBar.appearance().barStyle = .blackOpaque
-        return true
+        
+        
+        
+        NetworkMonitor.shared.startMonitoring()
         
 
         return true

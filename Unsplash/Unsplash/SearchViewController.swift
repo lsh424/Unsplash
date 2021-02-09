@@ -27,7 +27,7 @@ class SearchViewController: UIViewController {
         recentSearch.append("seoul")
         recentSearch.append("newyork")
         
-        searchTableView.register(UINib(nibName: "SearchListHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: "searchListHeaderView")
+        searchTableView.register(UINib(nibName: "SearchListHeaderView", bundle: nil), forHeaderFooterViewReuseIdentifier: SearchListHeaderView.identifier)
     }
 }
 

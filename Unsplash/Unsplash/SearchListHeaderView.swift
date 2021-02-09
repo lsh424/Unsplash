@@ -8,6 +8,8 @@
 import UIKit
 
 class SearchListHeaderView: UITableViewHeaderFooterView {
+    
+    static let identifier = "SearchListHeaderView"
 
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var clearButton: UIButton!

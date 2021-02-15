@@ -148,7 +148,8 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         cell.userNameLabel.text = nil
         cell.imageView.backgroundColor = .clear
         
-        let photo = photoOB.photos[indexPath.item]        
+        let photo = photoOB.photos[indexPath.item]
+        cell.id = photo.id
         cell.configure(with: photo)
         
         return cell

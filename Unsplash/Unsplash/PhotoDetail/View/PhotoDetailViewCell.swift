@@ -14,6 +14,8 @@ class PhotoDetailViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     
+    var id: String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         scrollView.minimumZoomScale = 1
@@ -29,7 +31,7 @@ class PhotoDetailViewCell: UICollectionViewCell {
         NetworkManager.shared.downloadImage(imageURL: url) { [weak self] (data) in
             let image = UIImage(data: data)
             
-            guard let strongSelf = self else {return}
+            guard let strongSelf = self, self?.id == photo.id else {return}
             
             DispatchQueue.main.async {
                 UIView.transition(with: strongSelf, duration: 0.25, options: [.transitionCrossDissolve], animations: {

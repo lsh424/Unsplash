@@ -154,7 +154,10 @@ extension PhotoDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         cell.imageView.image = nil
-        cell.configure(with: photoOB.photos[indexPath.item])
+        
+        let photo = photoOB.photos[indexPath.item]
+        cell.id = photo.id
+        cell.configure(with: photo)
         
         return cell
     }

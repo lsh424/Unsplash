@@ -59,6 +59,8 @@ extension PhotoListViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.imageView.backgroundColor = .clear
         
         let photo = photoOB.photos[indexPath.item]
+        
+        cell.id = photo.id
         cell.configure(with: photo)
         
         return cell

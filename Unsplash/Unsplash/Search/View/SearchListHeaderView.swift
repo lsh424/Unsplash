@@ -7,14 +7,20 @@
 
 import UIKit
 
+protocol SearchTableViewDelegate: AnyObject {
+    func updateSearchTableView()
+}
+
 class SearchListHeaderView: UITableViewHeaderFooterView {
     
     static let identifier = "SearchListHeaderView"
-
+    
+    weak var delegate: SearchTableViewDelegate?
+    
     @IBOutlet weak var headerLabel: UILabel!
     @IBOutlet weak var clearButton: UIButton!
     
     @IBAction func didPressClearButton(_ sender: UIButton) {
-        print("Pressed")
+        delegate?.updateSearchTableView()
     }
 }

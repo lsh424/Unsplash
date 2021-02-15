@@ -7,14 +7,12 @@
 
 import UIKit
 
-class ImageCell: UICollectionViewCell {
+class PhotoCell: UICollectionViewCell {
     
-    static let identifier = "ImageCell"
+    static let identifier = "PhotoCell"
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
-    
-    var id: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -38,6 +38,8 @@ class PhotoObject {
     }
     
     func searchPhotos(with search: String, completion: @escaping () -> Void) {
+        nextPage = 1
+        
         NetworkManager.shared.searchPhotos(query: search) { [weak self] (searchResult) in
             let newPhotos = searchResult.photos
             self?.photos.append(contentsOf: newPhotos)

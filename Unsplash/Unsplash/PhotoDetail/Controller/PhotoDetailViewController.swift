@@ -21,6 +21,8 @@ class PhotoDetailViewController: UIViewController{
     var indexPathItem: Int = 0
     var photoOB: PhotoObject!
     
+    private var isFirstLayoutSubviews: Bool = true
+    
     private lazy var informationView: InformationView = InformationView()
     private lazy var opaqueView: UIView = UIView()
     private lazy var currentContetnOffset: CGFloat = 0
@@ -34,8 +36,10 @@ class PhotoDetailViewController: UIViewController{
     }
     
     override func viewDidLayoutSubviews() {
+        guard isFirstLayoutSubviews else { return }
         self.collectionView.setContentOffset(CGPoint(x: Int(self.collectionView.frame.width) * indexPathItem, y: 0), animated: false)
         self.currentContetnOffset = collectionView.contentOffset.x
+        isFirstLayoutSubviews = false
     }
     
     private func setupCollectionView() {
@@ -65,7 +69,7 @@ class PhotoDetailViewController: UIViewController{
         let translation = sender.translation(in: self.view)
         
         switch sender.state {
-        case.began:
+        case .began:
             collectionViewOriginalCenter = collectionView.center
             collectionView.isScrollEnabled = false
             delegate?.updateCollectionView(indexPath: IndexPath(item: indexPathItem, section: 0))
@@ -154,6 +158,7 @@ extension PhotoDetailViewController: UICollectionViewDelegate, UICollectionViewD
         }
         
         cell.imageView.image = nil
+        cell.scrollView.zoomScale = 1.0
         
         let photo = photoOB.photos[indexPath.item]
         cell.id = photo.id
@@ -201,7 +206,7 @@ extension PhotoDetailViewController: UIGestureRecognizerDelegate {
         guard let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer, let cell = collectionView.visibleCells[0] as? PhotoDetailViewCell else {
             return false
         }
-        
+
         let velocity = panGestureRecognizer.velocity(in: collectionView)
         let collectionViewWidth = self.collectionView.frame.width
         

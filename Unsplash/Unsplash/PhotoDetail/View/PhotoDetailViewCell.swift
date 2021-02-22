@@ -29,9 +29,9 @@ class PhotoDetailViewCell: UICollectionViewCell {
         }
         
         NetworkManager.shared.downloadImage(imageURL: url) { [weak self] (data) in
-            let image = UIImage(data: data)
-            
             guard let strongSelf = self, self?.id == photo.id else {return}
+            
+            let image = UIImage(data: data)
             
             DispatchQueue.main.async {
                 UIView.transition(with: strongSelf, duration: 0.25, options: [.transitionCrossDissolve], animations: {

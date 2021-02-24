@@ -13,4 +13,8 @@ class ImageCacheManager {
     private init() {}
     
     let cachedImages = NSCache<NSString, NSData>()
+    
+    func cleanUpCache() {
+        cachedImages.removeAllObjects()
+    }
 }

@@ -21,11 +21,17 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupSearchBar()
         setupSearchTableView()
         setupCollectionView()
         setupToolBar()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        ImageCacheManager.shared.cleanUpCache()
     }
     
     private func setupSearchBar() {

@@ -35,6 +35,12 @@ class PhotoDetailViewController: UIViewController{
         setupUserName()
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        ImageCacheManager.shared.cleanUpCache()
+    }
+    
     override func viewDidLayoutSubviews() {
         guard isFirstLayoutSubviews else { return }
         self.collectionView.setContentOffset(CGPoint(x: Int(self.collectionView.frame.width) * indexPathItem, y: 0), animated: false)

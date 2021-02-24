@@ -26,6 +26,12 @@ class PhotoListViewController: UIViewController {
             }
         }
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        ImageCacheManager.shared.cleanUpCache()
+    }
         
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()

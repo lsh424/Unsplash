@@ -51,7 +51,7 @@ class PhotoObject {
     func updateSearchPhotos(with search: String, completion: @escaping ([IndexPath]) -> Void) {
         guard nextPage <= totalPage else {return}
         
-        NetworkManager.shared.searchPhotos(query: search, page: nextPage) { [weak self] (searchResult) in
+        NetworkManager.shared.searchPhotos(page: nextPage, query: search) { [weak self] (searchResult) in
             
             guard let strongSelf = self else {return}
             

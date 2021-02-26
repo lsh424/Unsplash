@@ -19,7 +19,7 @@ class PhotoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
-
+        
         photoOB.fetchPhotos {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -32,7 +32,7 @@ class PhotoListViewController: UIViewController {
         
         ImageCacheManager.shared.cleanUpCache()
     }
-        
+    
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -77,7 +77,7 @@ extension PhotoListViewController: UICollectionViewDelegate, UICollectionViewDat
         let photo = photoOB.photos[indexPath.item]
         
         let height = CGFloat(photo.height) * (collectionView.frame.width / CGFloat(photo.width))
-
+        
         return CGSize(width: self.view.frame.width, height: CGFloat(height))
     }
     

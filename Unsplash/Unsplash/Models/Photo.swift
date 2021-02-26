@@ -10,64 +10,87 @@ import Foundation
 class PhotoObject {
     var nextPage: Int = 1
     var photos: [Photo] = []
+    
+    lazy var currentSearch: String = ""
     private lazy var totalPage: Int = 1
     
     func fetchPhotos(completion: @escaping () -> Void) {
-        NetworkManager.shared.fetchPhotos { [weak self] (newPhotos) in
-            self?.photos.append(contentsOf: newPhotos)
-            completion()
+        NetworkManager.shared.fetchPhotos { [weak self] (result: Result<[Photo], NetworkError>) in
+            switch result {
+            case .success(let newPhotos):
+                self?.photos.append(contentsOf: newPhotos)
+                completion()
+            case .failure(let error):
+                print(error.description)
+            }
         }
     }
     
     func updatePhotos(completion: @escaping ([IndexPath]) -> Void) {
-        NetworkManager.shared.fetchPhotos(page: nextPage) { [weak self] (newPhotos) in
-            
-            guard let strongSelf = self else {return}
-            self?.photos.append(contentsOf: newPhotos)
-            
-            let newPhotosCount = newPhotos.count
-            let startIndex = (strongSelf.photos.count) - newPhotosCount
-            let endIndex = startIndex + newPhotosCount
-            var indexPaths = [IndexPath]()
-            
-            for index in startIndex..<endIndex {
-                indexPaths.append(IndexPath(item: index, section: 0))
+        NetworkManager.shared.fetchPhotos(page: nextPage) { [weak self] (result: Result<[Photo], NetworkError>) in
+            switch result {
+            case .success(let newPhotos):
+                guard let strongSelf = self else {return}
+                self?.photos.append(contentsOf: newPhotos)
+                
+                let newPhotosCount = newPhotos.count
+                let startIndex = (strongSelf.photos.count) - newPhotosCount
+                let endIndex = startIndex + newPhotosCount
+                var indexPaths = [IndexPath]()
+                
+                for index in startIndex..<endIndex {
+                    indexPaths.append(IndexPath(item: index, section: 0))
+                }
+                
+                completion(indexPaths)
+            case .failure(let error):
+                print(error.description)
             }
-            completion(indexPaths)
         }
     }
     
     func searchPhotos(with search: String, completion: @escaping () -> Void) {
         nextPage = 1
         
-        NetworkManager.shared.searchPhotos(query: search) { [weak self] (searchResult) in
-            let newPhotos = searchResult.photos
-            self?.photos.append(contentsOf: newPhotos)
-            self?.totalPage = searchResult.totalPages
-            completion()
+        NetworkManager.shared.searchPhotos(query: search) { [weak self] (result: Result<SearchResult, NetworkError>) in
+            switch result {
+            case .success(let searchResult):
+                let newPhotos = searchResult.photos
+                self?.photos.append(contentsOf: newPhotos)
+                self?.totalPage = searchResult.totalPages
+                completion()
+            case .failure(let error):
+                print(error.description)
+            }
         }
     }
     
-    func updateSearchPhotos(with search: String, completion: @escaping ([IndexPath]) -> Void) {
-        guard nextPage <= totalPage else {return}
+    func updateSearchPhotos(with search: String, completion: @escaping (Result<[IndexPath], NetworkError>) -> Void) {
+        guard nextPage <= totalPage else {
+            completion(.failure(.invalidPage))
+            return}
         
-        NetworkManager.shared.searchPhotos(page: nextPage, query: search) { [weak self] (searchResult) in
-            
-            guard let strongSelf = self else {return}
-            
-            let newPhotos = searchResult.photos
-            
-            self?.photos.append(contentsOf: newPhotos)
-            
-            let newPhotosCount = newPhotos.count
-            let startIndex = (strongSelf.photos.count) - newPhotosCount
-            let endIndex = startIndex + newPhotosCount
-            var indexPaths = [IndexPath]()
-            
-            for index in startIndex..<endIndex {
-                indexPaths.append(IndexPath(item: index, section: 0))
+        NetworkManager.shared.searchPhotos(page: nextPage, query: search) { [weak self] (result: Result<SearchResult, NetworkError>) in
+            switch result {
+            case .success(let searchResult):
+                guard let strongSelf = self else {return}
+                
+                let newPhotos = searchResult.photos
+                
+                self?.photos.append(contentsOf: newPhotos)
+                
+                let newPhotosCount = newPhotos.count
+                let startIndex = (strongSelf.photos.count) - newPhotosCount
+                let endIndex = startIndex + newPhotosCount
+                var indexPaths = [IndexPath]()
+                
+                for index in startIndex..<endIndex {
+                    indexPaths.append(IndexPath(item: index, section: 0))
+                }
+                completion(.success(indexPaths))
+            case .failure(let error):
+                print(error.description)
             }
-            completion(indexPaths)
         }
     }
 }

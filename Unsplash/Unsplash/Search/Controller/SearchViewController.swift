@@ -21,7 +21,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupSearchBar()
         setupSearchTableView()
         setupCollectionView()
@@ -172,9 +172,14 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if indexPath.item == photoOB.photos.count - 15 {
             photoOB.nextPage += 1
             
-            photoOB.updateSearchPhotos(with: searchBar.text!) { [weak self] (indexPaths) in
-                DispatchQueue.main.async {
-                    self?.collectionView.insertItems(at: indexPaths)
+            photoOB.updateSearchPhotos(with: searchBar.text!) { [weak self] (result: Result<[IndexPath], NetworkError>) in
+                switch result {
+                case .success(let indexPaths):
+                    DispatchQueue.main.async {
+                        self?.collectionView.insertItems(at: indexPaths)
+                    }
+                case .failure(let error):
+                    print(error.description)
                 }
             }
         }
@@ -187,6 +192,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         vc.photoOB = photoOB
         vc.indexPathItem = indexPath.item
         vc.delegate = self
+        vc.viewMode = .search
         vc.modalPresentationStyle = .overCurrentContext
         self.tabBarController?.hideTabBar()
         self.present(vc, animated: true, completion: nil)
@@ -239,6 +245,8 @@ extension SearchViewController: UISearchBarDelegate {
                 }
             }
         }
+        
+        photoOB.currentSearch = text
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

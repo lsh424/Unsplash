@@ -12,24 +12,25 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchPhotos(page: Int = 1, completion: @escaping ([Photo]) -> Void) {
+    func fetchPhotos(page: Int = 1, completion: @escaping (Result<[Photo], NetworkError>) -> Void) {
         let router = Router.fetchPhotos(page: page)
         APIRequester(with: router).request(completion: completion)
     }
     
-    func searchPhotos(page: Int = 1, query: String, completion: @escaping (SearchResult) -> Void) {
+    func searchPhotos(page: Int = 1, query: String, completion: @escaping (Result<SearchResult, NetworkError>) -> Void) {
         let router = Router.searchPhotos(page: page, query: query)
         APIRequester(with: router).request(completion: completion)
     }
-        
-    func fetchPhotoInfo(photoID: String, completion: @escaping (PhotoInfo) -> Void) {
+    
+    func fetchPhotoInfo(photoID: String, completion: @escaping (Result<PhotoInfo, NetworkError>) -> Void) {
         let router = Router.fetchPhotoInfo(photoID: photoID)
         APIRequester(with: router).request(completion: completion)
     }
     
-    func downloadImage(imageURL: URL, completion: @escaping (Data) -> Void) {
+    
+    func downloadImage(imageURL: URL, completion: @escaping (Result<Data, NetworkError>) -> Void) {
         if let imageData = ImageCacheManager.shared.cachedImages.object(forKey: imageURL.absoluteString as NSString) {
-            completion(imageData as Data)
+            completion(.success(imageData as Data))
             return
         }
         
@@ -39,9 +40,9 @@ class NetworkManager {
             do {
                 let data = try Data(contentsOf: url)
                 ImageCacheManager.shared.cachedImages.setObject(data as NSData, forKey: imageURL.absoluteString as NSString)
-                completion(data)
+                completion(.success(data))
             } catch {
-                print(error)
+                completion(.failure(.invalidData))
             }
         }
         task.resume()

@@ -11,6 +11,11 @@ protocol PhotoListViewDelegate: AnyObject {
     func updateCollectionView(indexPath: IndexPath)
 }
 
+enum ViewMode {
+    case list
+    case search
+}
+
 class PhotoDetailViewController: UIViewController{
     
     @IBOutlet weak var userNameLabel: UILabel!
@@ -20,6 +25,7 @@ class PhotoDetailViewController: UIViewController{
     
     var indexPathItem: Int = 0
     var photoOB: PhotoObject!
+    var viewMode: ViewMode = .list
     
     private var isFirstLayoutSubviews: Bool = true
     
@@ -122,9 +128,14 @@ class PhotoDetailViewController: UIViewController{
         
         let photoID = photoOB.photos[indexPathItem].id
         
-        NetworkManager.shared.fetchPhotoInfo(photoID: photoID) { [weak self] (photoInfo) in
-            DispatchQueue.main.async {
-                self?.informationView.configure(with: photoInfo)
+        NetworkManager.shared.fetchPhotoInfo(photoID: photoID) { [weak self] (result: Result<PhotoInfo, NetworkError>) in
+            switch result {
+            case .success(let photoInfo):
+                DispatchQueue.main.async {
+                    self?.informationView.configure(with: photoInfo)
+                }
+            case .failure(let error):
+                print(error.description)
             }
         }
         
@@ -177,9 +188,23 @@ extension PhotoDetailViewController: UICollectionViewDelegate, UICollectionViewD
         if indexPath.item == photoOB.photos.count - 15 {
             photoOB.nextPage += 1
             
-            photoOB.updatePhotos { [weak self] (indexPaths) in
-                DispatchQueue.main.async {
-                    self?.collectionView.insertItems(at: indexPaths)
+            switch viewMode {
+            case .list:
+                photoOB.updatePhotos { [weak self] (indexPaths) in
+                    DispatchQueue.main.async {
+                        self?.collectionView.insertItems(at: indexPaths)
+                    }
+                }
+            case .search:
+                photoOB.updateSearchPhotos(with: photoOB.currentSearch) { [weak self] (result: Result<[IndexPath], NetworkError>) in
+                    switch result {
+                    case .success(let indexPaths):
+                        DispatchQueue.main.async {
+                            self?.collectionView.insertItems(at: indexPaths)
+                        }
+                    case .failure(let error):
+                        print(error.description)
+                    }
                 }
             }
         }
@@ -212,7 +237,7 @@ extension PhotoDetailViewController: UIGestureRecognizerDelegate {
         guard let panGestureRecognizer = gestureRecognizer as? UIPanGestureRecognizer, let cell = collectionView.visibleCells[0] as? PhotoDetailViewCell else {
             return false
         }
-
+        
         let velocity = panGestureRecognizer.velocity(in: collectionView)
         let collectionViewWidth = self.collectionView.frame.width
         

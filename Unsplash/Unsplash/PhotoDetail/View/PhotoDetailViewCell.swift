@@ -28,15 +28,20 @@ class PhotoDetailViewCell: UICollectionViewCell {
             return
         }
         
-        NetworkManager.shared.downloadImage(imageURL: url) { [weak self] (data) in
-            guard let strongSelf = self, self?.id == photo.id else {return}
-            
-            let image = UIImage(data: data)
-            
-            DispatchQueue.main.async {
-                UIView.transition(with: strongSelf, duration: 0.25, options: [.transitionCrossDissolve], animations: {
-                    strongSelf.imageView.image = image
-                }, completion: nil)
+        NetworkManager.shared.downloadImage(imageURL: url) { [weak self] (result: Result<Data, NetworkError>) in
+            switch result {
+            case.success(let data):
+                guard let strongSelf = self, self?.id == photo.id else {return}
+                
+                let image = UIImage(data: data)
+                
+                DispatchQueue.main.async {
+                    UIView.transition(with: strongSelf, duration: 0.25, options: [.transitionCrossDissolve], animations: {
+                        strongSelf.imageView.image = image
+                    }, completion: nil)
+                }
+            case .failure(let error):
+                print(error.description)
             }
         }
     }

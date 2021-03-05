@@ -197,6 +197,7 @@
                             <constraint firstItem="XPf-uc-02I" firstAttribute="centerY" secondItem="PNU-Pt-Znf" secondAttribute="centerY" id="oFm-Ij-eot"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="collectionView" destination="FZZ-HP-Mcy" id="Kgh-Sl-0cZ"/>
                         <outlet property="userNameLabel" destination="PNU-Pt-Znf" id="bw5-F9-F5t"/>

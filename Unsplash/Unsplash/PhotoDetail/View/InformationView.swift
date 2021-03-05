@@ -32,6 +32,11 @@ class InformationView: UIView {
         self.backgroundColor = UIColor(hex: "101110")
     }
     
+    convenience init(frame: CGRect, with photoInfo: PhotoInfo) {
+        self.init(frame: frame)
+        configure(with: photoInfo)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

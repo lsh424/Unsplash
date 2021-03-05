@@ -40,7 +40,7 @@ class PhotoDetailViewController: UIViewController{
         setupGestureRecognizer()
         setupUserName()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -58,7 +58,6 @@ class PhotoDetailViewController: UIViewController{
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 10
-        layout.itemSize = CGSize(width: self.view.frame.width, height: self.collectionView.frame.height)
         
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         collectionView.collectionViewLayout = layout
@@ -182,6 +181,10 @@ extension PhotoDetailViewController: UICollectionViewDelegate, UICollectionViewD
         cell.configure(with: photo)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.view.frame.width, height: self.collectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

@@ -47,4 +47,5 @@ class NetworkManager {
         }
         task.resume()
     }
+    
 }
